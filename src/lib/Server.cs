@@ -10,6 +10,8 @@ namespace Sharesol.Server
   /// </summary>
   public class SynchronousSocketListener
   {
+    private ConfigurationLoader Loader = new ConfigurationLoader();
+
     /// <summary>
     /// Incoming data from the client.  
     /// </summary>
@@ -21,6 +23,8 @@ namespace Sharesol.Server
     /// </summary>
     public void StartListening()
     {
+      Configuration config = Loader.LoadConfig();
+
       // Data buffer for incoming data.  
       byte[] bytes = new Byte[1024];
 
@@ -29,7 +33,7 @@ namespace Sharesol.Server
       // host running the application.  
       IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
       IPAddress ipAddress = ipHostInfo.AddressList[0];
-      IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+      IPEndPoint localEndPoint = new IPEndPoint(ipAddress, config.LocalPort);
 
       // Create a TCP/IP socket.  
       Socket listener = new Socket(ipAddress.AddressFamily,
