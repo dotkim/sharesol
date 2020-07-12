@@ -330,4 +330,4 @@ ASALocalRun/
 .mfractor/
 
 # Settings file, a template is already uploaded.
-appsettings.json
+src/appsettings.json
