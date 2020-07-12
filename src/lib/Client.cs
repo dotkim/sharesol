@@ -33,7 +33,7 @@ namespace Sharesol.Client
 
         // Create a TCP/IP  socket.
         Socket sender = new Socket(ipAddress.AddressFamily,
-            SocketType.Stream, ProtocolType.Tcp);
+          SocketType.Stream, ProtocolType.Tcp);
 
         // Connect the socket to the remote endpoint. Catch any errors.
         try
@@ -42,7 +42,7 @@ namespace Sharesol.Client
           sender.Connect(remoteEP);
 
           Console.WriteLine("Socket connected to {0}",
-              sender.RemoteEndPoint.ToString());
+            sender.RemoteEndPoint.ToString());
 
           // Encode the data string into a byte array.
           byte[] msg = Encoding.ASCII.GetBytes(userInput + "<EOF>");
@@ -53,7 +53,7 @@ namespace Sharesol.Client
           // Receive the response from the remote device.
           int bytesRec = sender.Receive(bytes);
           Console.WriteLine("Echoed test = {0}",
-                    Encoding.ASCII.GetString(bytes, 0, bytesRec));
+            Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
           // Release the socket.
           sender.Shutdown(SocketShutdown.Both);
