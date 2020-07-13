@@ -31,8 +31,7 @@ namespace Sharesol.Server
       // Establish the local endpoint for the socket.  
       // Dns.GetHostName returns the name of the
       // host running the application.  
-      IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-      IPAddress ipAddress = ipHostInfo.AddressList[0];
+      IPAddress ipAddress = IPAddress.Parse(config.LocalIP);
       IPEndPoint localEndPoint = new IPEndPoint(ipAddress, config.LocalPort);
 
       // Create a TCP/IP socket.  
