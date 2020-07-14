@@ -3,16 +3,20 @@ namespace Sharesol
   /// <summary>Type class to contain the application config.</summary>
   public class Configuration
   {
-    /// <summary>An integer port for the remote server, this is used by the client. Default: 11000</summary>
+    /// <summary>An integer port for the remote server, this is used by the client.</summary>
+    /// <value>11000</value>
     public int RemotePort { get; set; } = 11000;
 
-    /// <summary>A Remote IP as a string, this is used by the client. Default: 127.0.0.1</summary>
+    /// <summary>A Remote IP as a string, this is used by the client.</summary>
+    /// <value>127.0.0.1</value>
     public string RemoteIP { get; set; } = "127.0.0.1";
 
-    /// <summary>An integer port for the local server, this is used by the remote client. Default: 11000</summary>
+    /// <summary>An integer port for the local server, this is used by the remote client.</summary>
+    /// <value>11000</value>
     public int LocalPort { get; set; } = 11000;
 
-    /// <summary>The local server IP as a string. Default: 127.0.0.1</summary>
+    /// <summary>The local server IP as a string.</summary>
+    /// <value>127.0.0.1</value>
     public string LocalIP { get; set; } = "127.0.0.1";
   }
 }
