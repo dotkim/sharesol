@@ -4,47 +4,88 @@ using System.Collections.Generic;
 namespace Sharesol
 {
   /// <summary>
-  /// Class used for writing to the console and logging verbosity.
+  /// Class used for writing to the console and logging verbosity
   /// </summary>
   public class Logging
   {
+    private ConfigurationLoader Loader = new ConfigurationLoader();
+    private Configuration Configuration { get; set; }
+
     /// <summary>
     /// An integer level for the logging.
     /// 1 = INFO (DEFAULT)
-    /// 2 = ERROR
-    /// 3 = VERBOSE
-    /// 4 = DEBUG
+    /// 2 = VERBOSE
+    /// 3 = ERROR
+    /// 4 = DEBUG (NOT IMPLEMENTED)
     /// </summary>
-    private int Verbosity { get; set; } = 1;
-    private string Prefix {get;set;} = "[INFO] - ";
+    private int Verbosity { get; set; }
 
-    /// <summary>
-    /// Creates a new logger instance with default verbosity.
-    /// </summary>
-    public Logging() { }
-
-    /// <summary>
-    /// Creates a new logger instance, this takes the verbosity level.
-    /// </summary>
-    public Logging(string verbosity)
+    private Dictionary<int, string> LevelTranslations = new Dictionary<int, string>
     {
-      Dictionary<string, int> levels = new Dictionary<string, int>
+      { 1, "INFO" },
+      { 2, "WARN" },
+      { 3, "ERROR" },
+      { 4, "DEBUG" }
+    };
+
+    private Dictionary<string, LoggingLevel> Levels = new Dictionary<string, LoggingLevel>
       {
-        { "INFO", 1 },
-        { "ERROR", 2 },
-        { "VERBOSE", 3 },
-        { "DEBUG", 4 }
+        { "INFO", new LoggingLevel { Verbosity = 1, Color = ConsoleColor.White } },
+        { "WARN", new LoggingLevel { Verbosity = 2, Color = ConsoleColor.Yellow } },
+        { "ERROR", new LoggingLevel { Verbosity = 3, Color = ConsoleColor.Red } },
+        { "DEBUG", new LoggingLevel { Verbosity = 4, Color = ConsoleColor.Gray } }
       };
 
-      int value;
-      if (levels.TryGetValue(verbosity, out value))
+    /// <summary>
+    /// Creates a new logger instance, this takes the verbosity level
+    /// </summary>
+    /// <param name="verbosity">String representing the wanted verbosity level</param>
+    public Logging(string verbosity)
+    {
+      Configuration = Loader.LoadConfig();
+      if (string.IsNullOrEmpty(verbosity))
       {
-        Verbosity = value;
-        Prefix = $"[{verbosity}] - ";
+        verbosity = Configuration.Verbosity;
       }
-      else {
-        System.Console.WriteLine("[WARN] - Verbosity level not recognized, using the default.");
+
+      LoggingLevel level;
+      if (Levels.TryGetValue(verbosity, out level))
+      {
+        Verbosity = level.Verbosity;
       }
+      else
+      {
+        Verbosity = Levels[Configuration.Verbosity].Verbosity;
+        WriteLine("Verbosity level not recognized, using the default", 2);
+        Console.WriteLine("[WARN] - ");
+      }
+    }
+
+    /// <summary>
+    /// Writes a new line to the console
+    /// </summary>
+    /// <param name="message">The message to write as a string</param>
+    /// <param name="severity">severity level of the </param>
+    /// <value>1</value>
+    /// <param name="data">A boolean to write the line without clutter on received data</param>
+    /// <value>false</value>
+    public void WriteLine(string message, int severity = 1, Boolean data = false)
+    {
+      string prefix = LevelTranslations[severity];
+      LoggingLevel level = Levels[prefix];
+      
+      Console.ForegroundColor = level.Color;
+
+      if (data)
+      {
+        Console.WriteLine(message);
+      }
+      else
+      {
+        Console.WriteLine($"[{prefix}] - {message}");
+      }
+
+      Console.ResetColor();
     }
   }
 }

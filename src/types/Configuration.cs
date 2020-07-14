@@ -18,5 +18,9 @@ namespace Sharesol
     /// <summary>The local server IP as a string.</summary>
     /// <value>127.0.0.1</value>
     public string LocalIP { get; set; } = "127.0.0.1";
+
+    /// <summary>Verbosity level, can be overridden with CLI argument.</summary>
+    /// <value>INFO</value>
+    public string Verbosity { get; set; } = "INFO";
   }
 }
