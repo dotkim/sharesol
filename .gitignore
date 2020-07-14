@@ -328,6 +328,3 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-
-# Settings file, a template is already uploaded.
-src/appsettings.json
