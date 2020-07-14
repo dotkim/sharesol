@@ -11,7 +11,7 @@ namespace Sharesol.Server
   public class SynchronousSocketListener
   {
     private ConfigurationLoader Loader = new ConfigurationLoader();
-
+    private Logger Log = new Logger();
     /// <summary>
     /// Incoming data from the client.  
     /// </summary>
@@ -33,6 +33,7 @@ namespace Sharesol.Server
       // host running the application.  
       IPAddress ipAddress = IPAddress.Parse(config.LocalIP);
       IPEndPoint localEndPoint = new IPEndPoint(ipAddress, config.LocalPort);
+      Log.WriteLine($"Local endpoint created at: {ipAddress}:{config.LocalPort}", 1);
 
       // Create a TCP/IP socket.  
       Socket listener = new Socket(ipAddress.AddressFamily,
@@ -48,7 +49,7 @@ namespace Sharesol.Server
         // Start listening for connections.  
         while (true)
         {
-          Console.WriteLine("Waiting for a connection...");
+          Log.WriteLine("Waiting for a connection...", 4);
           // Program is suspended while waiting for an incoming connection.  
           Socket handler = listener.Accept();
           data = null;
@@ -66,8 +67,9 @@ namespace Sharesol.Server
 
           data = data.Substring(0, data.IndexOf("<EOF>"));
 
-          // Show the data on the console.  
-          Console.WriteLine("Text received : {0}", data);
+          // Show the data on the console.
+          Log.WriteLine($"Text received: {data}", 4);
+          Log.WriteLine(data, 1, true);
 
           // Echo the data back to the client.  
           byte[] msg = Encoding.ASCII.GetBytes(data);
@@ -80,7 +82,7 @@ namespace Sharesol.Server
       }
       catch (Exception e)
       {
-        Console.WriteLine(e.ToString());
+        Log.WriteLine(e.ToString(), 3);
       }
 
       Console.WriteLine("\nPress ENTER to continue...");

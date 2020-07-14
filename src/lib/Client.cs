@@ -12,6 +12,7 @@ namespace Sharesol.Client
   public class SynchronousSocketClient
   {
     private ConfigurationLoader Loader = new ConfigurationLoader();
+    private Logger Log = new Logger();
 
     /// <summary>
     /// Method StartClient will start the client process, does not return anything.
@@ -41,8 +42,7 @@ namespace Sharesol.Client
           string userInput = GetUserInput();
           sender.Connect(remoteEP);
 
-          Console.WriteLine("Socket connected to {0}",
-            sender.RemoteEndPoint.ToString());
+          Log.WriteLine($"Socket connected to {sender.RemoteEndPoint.ToString()}", 4);
 
           // Encode the data string into a byte array.
           byte[] msg = Encoding.ASCII.GetBytes(userInput + "<EOF>");
@@ -52,8 +52,7 @@ namespace Sharesol.Client
 
           // Receive the response from the remote device.
           int bytesRec = sender.Receive(bytes);
-          Console.WriteLine("Echoed test = {0}",
-            Encoding.ASCII.GetString(bytes, 0, bytesRec));
+          Log.WriteLine($"Echoed {Encoding.ASCII.GetString(bytes, 0, bytesRec)}", 4);
 
           // Release the socket.
           sender.Shutdown(SocketShutdown.Both);
@@ -62,21 +61,21 @@ namespace Sharesol.Client
         }
         catch (ArgumentNullException ane)
         {
-          Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+          Log.WriteLine($"ArgumentNullException : {ane.ToString()}", 3);
         }
         catch (SocketException se)
         {
-          Console.WriteLine("SocketException : {0}", se.ToString());
+          Log.WriteLine($"SocketException : {se.ToString()}", 3);
         }
         catch (Exception e)
         {
-          Console.WriteLine("Unexpected exception : {0}", e.ToString());
+          Log.WriteLine($"Unexpected exception : {e.ToString()}", 3);
         }
 
       }
       catch (Exception e)
       {
-        Console.WriteLine(e.ToString());
+        Log.WriteLine(e.ToString(), 3);
       }
     }
 
@@ -85,7 +84,7 @@ namespace Sharesol.Client
     /// </summary>
     private string GetUserInput()
     {
-      System.Console.WriteLine("Waiting for input: ");
+      Log.WriteLine("Waiting for input:", 1);
       return System.Console.ReadLine();
     }
   }
