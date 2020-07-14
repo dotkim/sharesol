@@ -16,7 +16,7 @@ namespace Sharesol
     /// 1 = INFO (DEFAULT)
     /// 2 = VERBOSE
     /// 3 = ERROR
-    /// 4 = DEBUG (NOT IMPLEMENTED)
+    /// 4 = DEBUG
     /// </summary>
     private int Verbosity { get; set; }
 
@@ -35,6 +35,15 @@ namespace Sharesol
         { "ERROR", new LoggingLevel { Verbosity = 3, Color = ConsoleColor.Red } },
         { "DEBUG", new LoggingLevel { Verbosity = 4, Color = ConsoleColor.Gray } }
       };
+
+    /// <summary>
+    /// Creates a new logger instance, using the default verbosity
+    /// </summary>
+    public Logger()
+    {
+      Configuration = Loader.LoadConfig();
+      Verbosity = Levels[Configuration.Verbosity].Verbosity;
+    }
 
     /// <summary>
     /// Creates a new logger instance, this takes the verbosity level
