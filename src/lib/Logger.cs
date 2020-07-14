@@ -6,7 +6,7 @@ namespace Sharesol
   /// <summary>
   /// Class used for writing to the console and logging verbosity
   /// </summary>
-  public class Logging
+  public class Logger
   {
     private ConfigurationLoader Loader = new ConfigurationLoader();
     private Configuration Configuration { get; set; }
@@ -40,7 +40,7 @@ namespace Sharesol
     /// Creates a new logger instance, this takes the verbosity level
     /// </summary>
     /// <param name="verbosity">String representing the wanted verbosity level</param>
-    public Logging(string verbosity)
+    public Logger(string verbosity)
     {
       Configuration = Loader.LoadConfig();
       if (string.IsNullOrEmpty(verbosity))
@@ -57,7 +57,6 @@ namespace Sharesol
       {
         Verbosity = Levels[Configuration.Verbosity].Verbosity;
         WriteLine("Verbosity level not recognized, using the default", 2);
-        Console.WriteLine("[WARN] - ");
       }
     }
 
