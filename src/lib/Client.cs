@@ -84,7 +84,7 @@ namespace Sharesol.Client
     /// </summary>
     private string GetUserInput()
     {
-      Log.WriteLine("Waiting for input:", 1);
+      Log.WriteLine("Waiting for input:", 4);
       return System.Console.ReadLine();
     }
   }

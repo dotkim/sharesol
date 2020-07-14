@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text.Json;
 
 namespace Sharesol
 {
@@ -9,48 +8,47 @@ namespace Sharesol
   /// </summary>
   internal class ConfigurationLoader
   {
-    static private string defaultConfigPath = Directory.GetCurrentDirectory() + @"/appsettings.json";
-
-    private Configuration config = new Configuration();
+    static private string defaultConfigPath = Directory.GetCurrentDirectory() + @"/../Configuration.xml";
     private string cfgPath;
 
+    private Configuration config = new Configuration();
+
+    /// <summary>
+    /// Self reffering constructor if no path is provided on a new instance
+    /// </summary>
     public ConfigurationLoader() : this(defaultConfigPath) { }
+
+    /// <summary>
+    /// Creates a new instance of the Loader
+    /// </summary>
+    /// <param name="cfgPath">Takes a path to the config as a string</param>
     public ConfigurationLoader(string cfgPath)
     {
       this.cfgPath = cfgPath;
     }
 
     /// <summary>
-    /// Loads the config from the appsettings.json file.
-    /// Returns the <see cref="Configuration"/> type.
+    /// Loads the config from the configuration file
     /// </summary>
+    /// <returns>Returns a <see cref="Configuration"/> object</returns>
     public Configuration LoadConfig()
     {
       try
       {
         if (!File.Exists(cfgPath))
         {
-          throw new Exception("Missing the appsettings.json file, stopping application.");
+          throw new Exception("File not found.");
         }
 
         string cfgContent = File.ReadAllText(cfgPath);
-
-        config = Deserialize(cfgContent);
+        config = Xml.Deserialize<Configuration>(cfgContent);
 
         return config;
       }
-      catch (Exception)
+      catch (Exception err)
       {
-        throw;
+        throw err;
       }
-    }
-
-    /// <summary>
-    /// Used for deserializing json, only in use for parsing the config file.
-    /// </summary>
-    private Configuration Deserialize(string cfgContent)
-    {
-      return JsonSerializer.Deserialize<Configuration>(cfgContent);
     }
   }
 }
