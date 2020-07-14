@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Sharesol
 {
@@ -41,8 +42,15 @@ namespace Sharesol
     /// </summary>
     public Logger()
     {
-      Configuration = Loader.LoadConfig();
-      Verbosity = Levels[Configuration.Verbosity].Verbosity;
+      try
+      {
+        Configuration = Loader.LoadConfig();
+        Verbosity = Levels[Configuration.Verbosity].Verbosity;
+      }
+      catch (Exception err)
+      {
+        Console.WriteLine(err.ToString());
+      }
     }
 
     /// <summary>
@@ -51,21 +59,28 @@ namespace Sharesol
     /// <param name="verbosity">String representing the wanted verbosity level</param>
     public Logger(string verbosity)
     {
-      Configuration = Loader.LoadConfig();
-      if (string.IsNullOrEmpty(verbosity))
+      try
       {
-        verbosity = Configuration.Verbosity;
-      }
+        Configuration = Loader.LoadConfig();
+        if (string.IsNullOrEmpty(verbosity))
+        {
+          verbosity = Configuration.Verbosity;
+        }
 
-      LoggingLevel level;
-      if (Levels.TryGetValue(verbosity, out level))
-      {
-        Verbosity = level.Verbosity;
+        LoggingLevel level;
+        if (Levels.TryGetValue(verbosity, out level))
+        {
+          Verbosity = level.Verbosity;
+        }
+        else
+        {
+          Verbosity = Levels[Configuration.Verbosity].Verbosity;
+          WriteLine("Verbosity level not recognized, using the default", 1);
+        }
       }
-      else
+      catch (Exception err)
       {
-        Verbosity = Levels[Configuration.Verbosity].Verbosity;
-        WriteLine("Verbosity level not recognized, using the default", 2);
+        Console.WriteLine(err.ToString());
       }
     }
 
@@ -86,7 +101,15 @@ namespace Sharesol
       string prefix = LevelTranslations[severity];
       LoggingLevel level = Levels[prefix];
 
-      Console.ForegroundColor = level.Color;
+      // Foreground color causes a wierd bug when running in the Linux terminal (Terminator)
+      // I have disabled it for linux just because i cant be arsed to fix it
+      // It has something to do with the change in color calling a refresh or whatever
+      // Check it here: https://github.com/dotnet/runtime/issues/23241
+      // and https://github.com/dotnet/runtime/issues/26138
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      {
+        Console.ForegroundColor = level.Color;
+      }
 
       if (data)
       {
@@ -97,7 +120,11 @@ namespace Sharesol
         Console.WriteLine($"[{prefix}] - {message}");
       }
 
-      Console.ResetColor();
+      // Same as above
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      {
+        Console.ResetColor();
+      }
     }
   }
 }
