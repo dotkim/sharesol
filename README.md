@@ -1,9 +1,9 @@
 ```
- ____  _   _    _    ____  _____ ____   ___  _     
-/ ___|| | | |  / \  |  _ \| ____/ ___| / _ \| |    
-\___ \| |_| | / _ \ | |_) |  _| \___ \| | | | |    
- ___) |  _  |/ ___ \|  _ <| |___ ___) | |_| | |___ 
-|____/|_| |_/_/   \_\_| \_\_____|____/ \___/|_____|
+_____________  _____________________________________________
+__  ___/__  / / /__    |__  __ \__  ____/_  ___/_  __ \__  /
+_____ \__  /_/ /__  /| |_  /_/ /_  __/  _____ \_  / / /_  /
+____/ /_  __  / _  ___ |  _, _/_  /___  ____/ // /_/ /_  /___
+/____/ /_/ /_/  /_/  |_/_/ |_| /_____/  /____/ \____/ /_____/
 
 A bad name for a mediocre application.
 ```
@@ -25,8 +25,8 @@ Because i was too lazy to search the exact same thing on google twice.
 
 This is entierly client to client based, no need for a "server" to connect two computers together. But that also means no "multi-computer" support.
 
-I dont have any plans at this momemt to change this, but i might be enclined to add encryption and multi-computer support later.
+I dont have any plans at this momemt to change this, but i might want to add encryption and multi-computer support later.
 
 ### Configuration
 
-The appsettings.json file contains all the config options for the application, there aren't any optional options yet.
+Configuration is set in the Configuration.xml file. There is not optional setting even if it says that its a default. The XML parser does not consider an empty field as a default.
