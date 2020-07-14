@@ -73,15 +73,19 @@ namespace Sharesol
     /// Writes a new line to the console
     /// </summary>
     /// <param name="message">The message to write as a string</param>
-    /// <param name="severity">severity level of the </param>
+    /// <param name="severity">
+    /// severity level: 1 = INFO (DEFAULT), 2 = VERBOSE, 3 = ERROR, 4 = DEBUG
+    /// </param>
     /// <value>1</value>
     /// <param name="data">A boolean to write the line without clutter on received data</param>
     /// <value>false</value>
     public void WriteLine(string message, int severity = 1, Boolean data = false)
     {
+      if (severity > Verbosity) return;
+
       string prefix = LevelTranslations[severity];
       LoggingLevel level = Levels[prefix];
-      
+
       Console.ForegroundColor = level.Color;
 
       if (data)
