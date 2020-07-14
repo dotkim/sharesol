@@ -1,0 +1,21 @@
+<Configuration>
+  <!-- Client config -->
+  <!-- Default: 127.0.0.1:11000 -->
+  <RemotePort></RemotePort>
+  <RemoteIP></RemoteIP>
+
+  <!-- Server config -->
+  <!-- Default: 127.0.0.1:11000 -->
+  <LocalPort></LocalPort>
+  <LocalIP></LocalIP>
+
+  <!-- Logging config -->
+  <!--
+    Possible settings:
+    INFO (Default)
+    WARN
+    ERROR
+    DEBUG
+  -->
+  <Verbosity></Verbosity>
+</Configuration>
